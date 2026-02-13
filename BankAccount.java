@@ -4,9 +4,9 @@ public abstract class BankAccount {
     protected Customer customer;
 
     public BankAccount(String accountNumber, Customer customer, double balance) {
-        this.accountNumber = accountNumber;
-        this.customer = customer;
-        this.balance = balance;
+        setAccountNumber(accountNumber);
+        setCustomer(customer);
+        setBalance(balance);
     }
 
     public String getAccountNumber() {
@@ -14,7 +14,13 @@ public abstract class BankAccount {
     }
 
     public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+        if (accountNumber == null || accountNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("Account number cannot be blank.");
+        }
+        if (accountNumber.trim().length() > 5) {
+            throw new IllegalArgumentException("Account number must be 1-5 characters.");
+        }
+        this.accountNumber = accountNumber.trim();
     }
 
     public double getBalance() {
@@ -30,6 +36,9 @@ public abstract class BankAccount {
     }
 
     public void setCustomer(Customer customer) {
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer cannot be null.");
+        }
         this.customer = customer;
     }
 
@@ -37,6 +46,8 @@ public abstract class BankAccount {
 
     @Override
     public String toString() {
-        return String.format("Account Number: %s, Type: %s, Balance: %.2f, Customer: %s", accountNumber, getAccountType(), balance, customer);
+        return String.format("Account Number: %s, Type: %s, Balance: $%.2f, Customer: %s %s", 
+            accountNumber, getAccountType(), balance, 
+            customer.getFirstName(), customer.getLastName());
     }
 }

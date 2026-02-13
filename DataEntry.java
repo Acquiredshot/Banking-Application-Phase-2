@@ -26,6 +26,9 @@ public class DataEntry {
         do {
             System.out.print(prompt);
             input = scanner.nextLine().trim();
+            if (!input.matches("\\d{" + length + "}")) {
+                System.out.println("Must be exactly " + length + " numeric digits. Try again.");
+            }
         } while (!input.matches("\\d{" + length + "}"));
         return input;
     }
@@ -47,6 +50,9 @@ public class DataEntry {
         int value;
         do {
             value = getInt(prompt);
+            if (value < min || value > max) {
+                System.out.println("Value must be between " + min + " and " + max + ". Please try again.");
+            }
         } while (value < min || value > max);
         return value;
     }
@@ -68,6 +74,9 @@ public class DataEntry {
         double value;
         do {
             value = getDouble(prompt);
+            if (value < min || value > max) {
+                System.out.println("Value must be between " + min + " and " + max + ". Please try again.");
+            }
         } while (value < min || value > max);
         return value;
     }
