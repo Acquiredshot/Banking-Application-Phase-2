@@ -1,4 +1,4 @@
-public class Account {
+public abstract class Account implements AccountInterface {
     // Basic account information fields
     private String accountNumber;    // max 5 characters
     private String accountType;      // CHK or SAV only
@@ -108,4 +108,10 @@ public class Account {
                            accountNumber, accountType, serviceFee, interestRate, 
                            overdraftFee, balance);
     }
+
+    public abstract void withdrawal();
+
+    public abstract void deposit();
+
+    public abstract double balance();
 }

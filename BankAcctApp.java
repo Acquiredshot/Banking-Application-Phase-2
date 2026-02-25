@@ -19,12 +19,18 @@ public class BankAcctApp {
     
     public static void main(String[] args) {
         ArrayList<Customer> customers = new ArrayList<>();
-        ArrayList<Account> accounts = new ArrayList<>();
+        ArrayList<CheckingAccount> checkingAccounts = new ArrayList<>();
+        ArrayList<SavingsAccount> savingsAccounts = new ArrayList<>();
         String continueChoice;
+        String checkingCustomerId = null;
+        String savingsCustomerId = null;
+        CheckingAccount checkingAccount = null;
+        SavingsAccount savingsAccount = null;
 
         do {
             final Customer currentCustomer = new Customer();
-            final Account currentAccount = new Account();
+            CheckingAccount currentChecking = null;
+            SavingsAccount currentSavings = null;
 
             System.out.println("\n========== NEW CUSTOMER & ACCOUNT ENTRY ==========");
             
@@ -67,42 +73,146 @@ public class BankAcctApp {
 
             // Collect Account Information
             System.out.println("\n--- Account Information ---");
-            
-            collectInputWithRetry(() -> {
-                String acctNum = DataEntry.getString("Enter Account Number (max 5): ", 5);
-                currentAccount.setAccountNumber(acctNum);
-            });
-            
-            collectInputWithRetry(() -> {
-                String acctType = DataEntry.getString("Enter Account Type (CHK or SAV): ", 3).toUpperCase();
-                currentAccount.setAccountType(acctType);
-            });
-            
-            collectInputWithRetry(() -> {
-                double fee = DataEntry.getDouble("Enter Service Fee (0.00 to 10.00): ", 0.0, 10.0);
-                currentAccount.setServiceFee(fee);
-            });
-            
-            collectInputWithRetry(() -> {
-                double rate = DataEntry.getDouble("Enter Interest Rate (0.0 to 10.0 percent): ", 0.0, 10.0);
-                currentAccount.setInterestRate(rate);
-            });
-            
-            collectInputWithRetry(() -> {
-                double odFee = DataEntry.getDouble("Enter Overdraft Fee: ");
-                if (odFee < 0) {
-                    throw new IllegalArgumentException("Overdraft fee cannot be negative.");
+
+            String acctType;
+            while (true) {
+                try {
+                    acctType = DataEntry.getString("Enter Account Type (CHK or SAV): ", 3).toUpperCase();
+                    if (!acctType.equals("CHK") && !acctType.equals("SAV")) {
+                        throw new IllegalArgumentException("Account type must be CHK or SAV.");
+                    }
+                    break;
+                } catch (IllegalArgumentException ex) {
+                    System.out.println("ERROR: " + ex.getMessage());
                 }
-                currentAccount.setOverdraftFee(odFee);
-            });
-            
-            collectInputWithRetry(() -> {
-                double bal = DataEntry.getDouble("Enter Initial Balance: ");
-                currentAccount.setBalance(bal);
-            });
+            }
+
+            if (acctType.equals("CHK")) {
+                currentChecking = new CheckingAccount();
+
+                while (true) {
+                    try {
+                        String acctNum = DataEntry.getString("Enter Account Number (max 5): ", 5);
+                        currentChecking.setAccountNumber(acctNum);
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        double bal = DataEntry.getDouble("Enter Initial Balance: ");
+                        currentChecking.setBalance(bal);
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        String date = DataEntry.getString("Enter Transaction Date (MM/DD/YYYY): ");
+                        currentChecking.setTransactionDate(date);
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        String type = DataEntry.getString("Enter Transaction Type (DEP or WTH): ", 3);
+                        currentChecking.setTransactionType(type);
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        double amount = DataEntry.getDouble("Enter Transaction Amount: ");
+                        currentChecking.setTransactionAmount(amount);
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                if (currentChecking.getTransactionType().equals("DEP")) {
+                    currentChecking.deposit();
+                } else {
+                    currentChecking.withdrawal();
+                }
+
+                checkingAccounts.add(currentChecking);
+                checkingCustomerId = currentCustomer.getCustomerID();
+                checkingAccount = currentChecking;
+            } else {
+                currentSavings = new SavingsAccount();
+
+                while (true) {
+                    try {
+                        String acctNum = DataEntry.getString("Enter Account Number (max 5): ", 5);
+                        currentSavings.setAccountNumber(acctNum);
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        double bal = DataEntry.getDouble("Enter Initial Balance: ");
+                        currentSavings.setBalance(bal);
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        String date = DataEntry.getString("Enter Transaction Date (MM/DD/YYYY): ");
+                        currentSavings.setTransactionDate(date);
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        String type = DataEntry.getString("Enter Transaction Type (DEP or WTH): ", 3);
+                        currentSavings.setTransactionType(type);
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        double amount = DataEntry.getDouble("Enter Transaction Amount: ");
+                        currentSavings.setTransactionAmount(amount);
+                        if (currentSavings.getTransactionType().equals("DEP")) {
+                            currentSavings.deposit();
+                        } else {
+                            currentSavings.withdrawal();
+                        }
+                        break;
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("ERROR: " + ex.getMessage());
+                    }
+                }
+
+                savingsAccounts.add(currentSavings);
+                savingsCustomerId = currentCustomer.getCustomerID();
+                savingsAccount = currentSavings;
+            }
 
             customers.add(currentCustomer);
-            accounts.add(currentAccount);
 
             continueChoice = DataEntry.getString("\nAdd another customer/account? (y/n): ", 1);
 
@@ -110,7 +220,133 @@ public class BankAcctApp {
 
         // Display Results
         displayCustomerList(customers);
-        displayAccountList(accounts);
+        displayCheckingAccountList(checkingAccounts);
+        displaySavingsAccountList(savingsAccounts);
+
+        if (checkingAccount != null) {
+            runCheckingScenario(checkingCustomerId, checkingAccount);
+        }
+
+        if (savingsAccount != null) {
+            runSavingsScenario(savingsCustomerId, savingsAccount);
+        }
+    }
+
+    private static void runCheckingScenario(String customerId, CheckingAccount account) {
+        System.out.println("\n==================== CHECKING ACCOUNT TRANSACTIONS ====================");
+        printTransactionHeader();
+
+        String accountNumber = account.getAccountNumber();
+        String date = "02/25/2026";
+
+        executeCheckingTransaction(customerId, accountNumber, date, account, "DEP", 1000.00);
+        executeCheckingTransaction(customerId, accountNumber, date, account, "WTH", 500.00);
+        executeCheckingTransaction(customerId, accountNumber, date, account, "WTH", 501.00);
+        executeCheckingTransaction(customerId, accountNumber, date, account, "DEP", 500.00);
+
+        double interest = account.balance() - account.getBalance();
+        account.setBalance(account.balance());
+        printTransactionRow(
+            customerId,
+            accountNumber,
+            date,
+            "DEP",
+            interest,
+            0.0,
+            account.getBalance()
+        );
+    }
+
+    private static void executeCheckingTransaction(String customerId, String accountNumber, String date,
+                                                   CheckingAccount account, String type, double amount) {
+        double before = account.getBalance();
+        account.setTransactionDate(date);
+        account.setTransactionType(type);
+        account.setTransactionAmount(amount);
+
+        if (type.equals("DEP")) {
+            account.deposit();
+        } else {
+            account.withdrawal();
+        }
+
+        double after = account.getBalance();
+        double charges = type.equals("DEP")
+            ? (before + amount - after)
+            : (before - amount - after);
+
+        printTransactionRow(customerId, accountNumber, date, type, amount, charges, after);
+    }
+
+    private static void runSavingsScenario(String customerId, SavingsAccount account) {
+        System.out.println("\n==================== SAVINGS ACCOUNT TRANSACTIONS ====================");
+        printTransactionHeader();
+
+        String accountNumber = account.getAccountNumber();
+        String date = "02/25/2026";
+
+        executeSavingsTransaction(customerId, accountNumber, date, account, "DEP", 1000.00);
+        executeSavingsTransaction(customerId, accountNumber, date, account, "WTH", 500.00);
+        executeSavingsTransaction(customerId, accountNumber, date, account, "WTH", 501.00);
+        executeSavingsTransaction(customerId, accountNumber, date, account, "DEP", 500.00);
+
+        double interest = account.balance() - account.getBalance();
+        account.setBalance(account.balance());
+        printTransactionRow(
+            customerId,
+            accountNumber,
+            date,
+            "DEP",
+            interest,
+            0.0,
+            account.getBalance()
+        );
+    }
+
+    private static void executeSavingsTransaction(String customerId, String accountNumber, String date,
+                                                  SavingsAccount account, String type, double amount) {
+        double before = account.getBalance();
+        account.setTransactionDate(date);
+        account.setTransactionType(type);
+        account.setTransactionAmount(amount);
+        boolean success = true;
+
+        try {
+            if (type.equals("DEP")) {
+                account.deposit();
+            } else {
+                account.withdrawal();
+            }
+        } catch (IllegalArgumentException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+            success = false;
+        }
+
+        double after = account.getBalance();
+        double charges = 0.0;
+        if (success) {
+            charges = type.equals("DEP")
+                ? (before + amount - after)
+                : (before - amount - after);
+        }
+
+        printTransactionRow(customerId, accountNumber, date, type, amount, charges, after);
+    }
+
+    private static void printTransactionHeader() {
+        System.out.printf(
+            "%-6s %-10s %-12s %-5s %-12s %-12s %-12s\n",
+            "Cust", "Account", "Date", "Type", "Amount", "Charges", "Balance"
+        );
+        System.out.println("===============================================================");
+    }
+
+    private static void printTransactionRow(String customerId, String accountNumber, String date,
+                                            String type, double amount, double charges, double balance) {
+        System.out.printf(
+            "%-6s %-10s %-12s %-5s $%-11.2f $%-11.2f $%-11.2f\n",
+            customerId, accountNumber, date, type, amount, charges, balance
+        );
     }
     
     private static void displayCustomerList(ArrayList<Customer> customers) {
@@ -124,11 +360,19 @@ public class BankAcctApp {
         }
     }
     
-    private static void displayAccountList(ArrayList<Account> accounts) {
-        System.out.println("\n==================== ACCOUNT LIST ====================");
-        for (Account a : accounts) {
+    private static void displayCheckingAccountList(ArrayList<CheckingAccount> accounts) {
+        System.out.println("\n==================== CHECKING ACCOUNT LIST ====================");
+        for (CheckingAccount a : accounts) {
             System.out.println(a);
-            System.out.println("------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------");
+        }
+    }
+
+    private static void displaySavingsAccountList(ArrayList<SavingsAccount> accounts) {
+        System.out.println("\n==================== SAVINGS ACCOUNT LIST ====================");
+        for (SavingsAccount a : accounts) {
+            System.out.println(a);
+            System.out.println("-------------------------------------------------------------");
         }
     }
 }
