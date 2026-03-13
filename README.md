@@ -1,97 +1,102 @@
-# 🏦 Banking Application
+# 🏦 Banking Application (Phase 3 Complete)
 
-A Java-based console application for managing customer accounts with comprehensive data validation and error handling.
+A Java banking system that supports customer/account management, strong input validation, inheritance-based account types, and a Swing GUI.
 
 ## 📋 Project Overview
 
-This Banking Application demonstrates object-oriented programming principles, input validation, and exception handling in Java. The system allows users to create and manage customer profiles with associated bank accounts, ensuring data integrity through multi-layered validation.
+This project demonstrates core object-oriented design in Java across multiple phases. The application now includes:
 
-## ✨ Features
+- Customer profile management
+- Account creation and tracking
+- Validation and exception handling
+- Polymorphic account behavior via inheritance
+- A graphical interface using Swing
+
+## ✅ Phase Status
 
 ### Phase 1 & 2 (Complete)
-- ✅ Customer information management
-- ✅ Account creation and tracking
-- ✅ Real-time input validation with error messages
-- ✅ Try-catch exception handling with retry loops
-- ✅ Data sanitization (trim whitespace)
-- ✅ Multi-account support (CHK/SAV)
-- ✅ Formatted console output
+- Customer information management
+- Account setup and tracking
+- Real-time input validation
+- Try-catch validation loops
+- Data sanitization
+- Console output flow
 
-### Phase 3 (Upcoming)
-- 🔄 Inheritance hierarchy with BankAccount base class
-- 🔄 CheckingAccount and SavingsAccount specialized classes
-- 🔄 GUI implementation with Swing
+### Phase 3 (Complete)
+- `BankAccount` base class hierarchy
+- Specialized `CheckingAccount` and `SavingsAccount` classes
+- Swing-based GUI in `BankAppGUI`
+- Continued use of validation and encapsulation across models
 
 ## 🎯 Validation Rules
 
-### Customer Requirements
-- **Customer ID**: Max 5 characters, cannot be blank
-- **SSN**: Exactly 9 numeric digits, cannot be blank
-- **Last Name**: Max 20 characters, cannot be blank
-- **First Name**: Max 15 characters, cannot be blank
-- **Street**: Max 20 characters, cannot be blank
-- **City**: Max 20 characters, cannot be blank
-- **State**: Exactly 2 characters, cannot be blank
-- **Zip Code**: Exactly 5 numeric digits, cannot be blank
-- **Phone**: Exactly 10 numeric digits, no punctuation
+### Customer Data
+- **Customer ID**: Max 5 characters, not blank
+- **SSN**: Exactly 9 numeric digits
+- **Last Name**: Max 20 characters, not blank
+- **First Name**: Max 15 characters, not blank
+- **Street**: Max 20 characters, not blank
+- **City**: Max 20 characters, not blank
+- **State**: Exactly 2 characters
+- **Zip Code**: Exactly 5 numeric digits
+- **Phone**: Exactly 10 numeric digits
 
-### Account Requirements
-- **Account Number**: Max 5 characters, cannot be blank
-- **Account Type**: Must be "CHK" or "SAV" (case-insensitive)
-- **Service Fee**: Range 0.00 to 10.00 dollars (inclusive)
-- **Interest Rate**: Range 0.0 to 10.0 percent (stored as decimal, e.g., 7.5)
-- **Overdraft Fee**: Must be non-negative
-- **Balance**: Any value (initially zero)
+### Account Data
+- **Account Number**: Max 5 characters, not blank
+- **Account Type**: `CHK` or `SAV`
+- **Service Fee**: $0.00 to $10.00
+- **Interest Rate**: 0.0% to 10.0%
+- **Overdraft Fee**: Non-negative
+- **Balance**: Numeric value (defaults/starts at zero where applicable)
 
-## 🛠️ Technologies Used
+## 🛠️ Technologies
 
-- **Language**: Java
-- **Collections**: ArrayList
-- **Input/Output**: Scanner, Console I/O
-- **Validation**: Regular Expressions (Regex)
-- **Error Handling**: Try-Catch blocks, IllegalArgumentException
-- **Design Patterns**: Encapsulation, Helper Methods, Lambda Expressions
-- **Version Control**: Git, GitHub
+- Java
+- Swing (GUI)
+- ArrayList Collections
+- Regex Validation
+- Exception Handling (`IllegalArgumentException`, `try/catch`)
 
 ## 📁 Project Structure
-Banking Application/
-├── Account.java # Account data model with validation
-├── BankAccount.java # Abstract base class for accounts (Phase 3)
-├── BankAcctApp.java # Main application entry point
-├── BankAppGUI.java # GUI implementation (Phase 3)
-├── CheckingAccount.java # Checking account subclass (Phase 3)
-├── Customer.java # Customer data model with validation
-├── DataEntry.java # Utility class for input handling
-├── SavingsAccount.java # Savings account subclass (Phase 3)
-└── README.md # Project documentation
 
+Banking-Application-Phase-3/
+├── Account.java
+├── AccountInterface.java
+├── BankAccount.java
+├── BankAcctApp.java
+├── BankAppGUI.java
+├── CheckingAccount.java
+├── Customer.java
+├── DataEntry.java
+├── SavingsAccount.java
+└── README.md
 
 ## 🚀 How to Run
 
 ### Prerequisites
-- Java Development Kit (JDK) 8 or higher
-- Command line terminal or IDE (VS Code, IntelliJ, Eclipse)
+- JDK 8+
+- VS Code, IntelliJ, Eclipse, or terminal
 
-### Compilation
+### Compile
 ```bash
 javac *.java
+```
 
-### Execution
+### Run Console App
+```bash
 java BankAcctApp
+```
 
-🔒 Security Features
-Input sanitization (trim whitespace)
-Strict type validation
-Range boundary checking
-Null-safe operations
-Exception-safe execution (no crashes)
+### Run GUI App
+```bash
+java BankAppGUI
+```
 
-🏗️ Architecture Highlights
-Design Principles
-Encapsulation: Private fields with public getters/setters
-Separation of Concerns: Distinct classes for data, logic, and I/O
-DRY Principle: Reusable utility methods in DataEntry
-Defensive Programming: Validation at multiple layers
-Lambda Expressions: Modern Java functional programming
+## 🧱 Design Highlights
+
+- Encapsulation through private fields and validated setters
+- Inheritance/polymorphism for account behavior
+- Separation of concerns across data models, input handling, and UI
+- Defensive programming to prevent invalid states
 
 
